@@ -1,62 +1,65 @@
 📡 Detector de Dispositivos LLDP para Infraestructuras de Red
-Descripción
+Introducción
 
-Este script de PowerShell fue creado a partir de una necesidad práctica como técnico informático: la de identificar de manera eficiente a qué switches y puertos están conectadas las rosetas de pared en edificios grandes, donde el rastreo manual de cables en el armario de comunicaciones resulta tedioso y consume mucho tiempo.
+Este script de PowerShell, LLDP_DISCOVER_By_JKG.ps1, nace de la necesidad práctica de un técnico informático. Su objetivo es simplificar la tediosa tarea de identificar a qué switches y puertos están conectadas las rosetas de pared en edificios grandes, evitando el rastreo manual de cables.
 
-Su propósito principal es automatizar el descubrimiento de dispositivos de red vecinos que utilizan el protocolo LLDP (Link Layer Discovery Protocol), proporcionando información crucial como la dirección MAC del chasis, el puerto de conexión, el nombre del switch, su descripción, la IP de gestión y la VLAN asignada.
-Características
+Automatiza el descubrimiento de dispositivos de red vecinos que utilizan el protocolo LLDP (Link Layer Discovery Protocol), proporcionando información vital de manera rápida y eficiente.
+🌟 Características Principales
 
-    Verificación automática de TShark: Detecta si TShark (parte de Wireshark) está instalado y es accesible en el sistema. 🔎
+    Verificación y Autoinstalación de TShark: Detecta si TShark (esencial para el análisis de red) está instalado. Si no, intenta descargarlo e instalarlo silenciosamente (requiere permisos de administrador). 🔎⬇️
 
-    Instalación automática (intento): Si TShark no se encuentra, el script intenta descargar y ejecutar el instalador de Wireshark de forma silenciosa. ⬇️
+    Gestión del PATH: Después de una instalación exitosa, el script intenta añadir automáticamente la ruta de TShark al PATH del sistema para su uso futuro. 🛣️
 
-    Añadir a PATH: Tras una instalación exitosa, el script intenta añadir automáticamente la ruta de TShark al PATH del sistema y de la sesión actual de PowerShell para facilitar su uso futuro. 🛣️
+    Validación de Administrador: Asegura que el script se ejecute con los permisos elevados necesarios, indicando al usuario cómo proceder si no es así. 🔑
 
-    Detección de privilegios de administrador: Asegura que el script se ejecute con los permisos necesarios, advirtiendo al usuario si no es así y solicitando que lo ejecute como administrador. 🔑
+    Análisis LLDP Automático: Captura y analiza el tráfico LLDP en una interfaz seleccionada durante 30 segundos, extrayendo datos clave. ⏱️
 
-    Captura y análisis de tráfico LLDP: Utiliza TShark para capturar tráfico LLDP en una interfaz seleccionada durante 30 segundos. ⏱️
+    Resultados Claros: Muestra la información de los dispositivos descubiertos de forma estructurada y legible en la consola. 📊
 
-    Salida estructurada: Presenta la información de los dispositivos LLDP descubiertos de forma clara y legible en la consola. 📊
-
-Requisitos
+⚙️ Requisitos
 
     Sistema Operativo Windows. 🖥️
 
     PowerShell (versión 5.1 o superior recomendada). 🚀
 
-    Privilegios de administrador para la instalación de TShark y la modificación del PATH. 🛡️
+    Privilegios de Administrador: Imprescindibles para la instalación de TShark y las modificaciones del PATH. 🛡️
 
-Instalación y Uso
+🚀 Instalación y Uso
 
-    Descargar el script: Clona este repositorio o descarga el archivo .ps1 directamente. 📥
+    Descargar: Obtén el script LLDP_DISCOVER_By_JKG.ps1 clonando este repositorio o descargando el archivo directamente. 📥
 
-    Ejecutar como administrador: Abre una consola de PowerShell como administrador. Puedes hacerlo buscando "PowerShell" en el menú Inicio, haciendo clic derecho y seleccionando "Ejecutar como administrador". 🖱️
+    Ejecutar como Administrador:
 
-    Navegar a la ruta del script: En la consola de PowerShell, usa el comando cd para ir a la carpeta donde guardaste el script. 📁
+        Abre una consola de PowerShell con privilegios de administrador. (Busca "PowerShell" en el menú Inicio, clic derecho > "Ejecutar como administrador"). 🖱️
 
-    cd C:\Ruta\Donde\Guardaste\ElScript
+        Importante: Si no lo ejecutas como administrador inicialmente, el script te lo indicará y se cerrará la sesión actual no elevada, esperando que lo reinicies correctamente. ❌
 
-    Ejecutar el script: ▶️
+    Navegar a la Ruta del Script:
 
-    .\LLDP_DISCOVER_By_JKG.ps1
+        En la consola de PowerShell abierta como administrador, ve a la carpeta donde guardaste el script:
 
-Comportamiento del script al inicio:
+        cd C:\Ruta\Donde\Guardaste\ElScript
 
-    Verificación de administrador: El script verificará si se ejecuta como administrador. Si no es así, te pedirá que lo hagas y se cerrará la sesión actual no elevada. ❌
+    Iniciar el Script:
 
-    Verificación de TShark:
+        Ejecuta el script con el siguiente comando:
 
-        Si TShark ya está instalado y accesible, el script continuará con la detección de interfaces. ✅
+        .\LLDP_DISCOVER_By_JKG.ps1
 
-        Si TShark no está instalado, el script intentará descargarlo e instalarlo de forma silenciosa. Esto puede requerir aceptar un aviso de Control de Cuentas de Usuario (UAC). ⚠️
+Comportamiento al Inicio:
 
-        IMPORTANTE: Si TShark se instala, es muy probable que necesites reiniciar tu consola de PowerShell (o incluso tu equipo) para que TShark esté disponible en el PATH y el script pueda usarlo en futuras sesiones. El script te lo indicará con un mensaje. 🔄
+    Primer Lanzamiento / TShark no Encontrado: El script intentará la instalación de TShark y te pedirá confirmación de UAC si es necesario.
 
-Después de la inicialización:
+    Post-Instalación: Si TShark se instala, es muy probable que necesites reiniciar tu consola de PowerShell (o incluso tu equipo). Esto asegura que TShark esté permanentemente disponible en el PATH y el script funcione en futuras sesiones. El script te lo recordará. 🔄
 
-El script mostrará una lista de interfaces de red disponibles. Deberás introducir el número correspondiente a la interfaz ETHERNET por la que deseas capturar el tráfico LLDP. 📝
+Uso Tras la Inicialización:
 
-Luego, el script capturará el tráfico durante 30 segundos y mostrará la información de cualquier dispositivo LLDP detectado, como se describe en la sección de "Descripción". ✨
-Créditos
+    El script listará las interfaces de red disponibles.
 
-Este script fue creado por Javier López (JKG). 👨‍💻
+    Deberás introducir el número de la interfaz ETHERNET para iniciar la captura de tráfico LLDP. 📝
+
+    Después de 30 segundos, verás los detalles de los dispositivos LLDP detectados. ✨
+
+👨‍💻 Créditos
+
+Script creado por Javier López (JKG).
